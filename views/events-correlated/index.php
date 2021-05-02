@@ -51,7 +51,20 @@ $this->registerJs('
                 ],
                 'host',
                 'cef_name',
-                'cef_severity',
+                [
+                        'attribute' => 'cef_severity',
+                        'value' => 'cef_severity',
+                        'contentOptions' => function ($dataProvider, $key, $index, $column) {
+                            $array = array("#00DBFF", "#00FF00", "#FFFF00", "#CC5500", "#FF0000");
+                            $event_severity = $dataProvider->cef_severity;
+
+                            if (0 < $event_severity && $event_severity < 11){
+                                return ['style' => 'background-color:'.$array[($event_severity - 1) / 2]];
+                            } else {
+                                return ['style' => 'background-color:#FFFFFF'];
+                            }
+                        }
+                    ],
                 ['class' => 'macgyer\yii2materializecss\widgets\grid\ActionColumn', 'template'=>'{view}'],
             ],
         ]); ?>

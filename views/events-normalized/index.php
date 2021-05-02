@@ -58,21 +58,11 @@ $this->registerJs('
                         'attribute' => 'cef_severity',
                         'value' => 'cef_severity',
                         'contentOptions' => function ($dataProvider, $key, $index, $column) {
-                            $array = [
-                                ['id' => '1', 'data' => '#00DBFF'],
-                                ['id' => '2', 'data' => '#00DBFF'],
-                                ['id' => '3', 'data' => '#00FF00'],
-                                ['id' => '4', 'data' => '#00FF00'],
-                                ['id' => '5', 'data' => '#FFFF00'],
-                                ['id' => '6', 'data' => '#FFFF00'],
-                                ['id' => '7', 'data' => '#CC5500'],
-                                ['id' => '8', 'data' => '#CC5500'],
-                                ['id' => '9', 'data' => '#FF0000'],
-                                ['id' => '10', 'data' => '#FF0000'],
-                            ];
-                            if (0 < $dataProvider->cef_severity && $dataProvider->cef_severity < 11){
-                                $map = ArrayHelper::map($array, 'id', 'data');
-                                return ['style' => 'background-color:'.$map[$dataProvider->cef_severity]];
+                            $array = array("#00DBFF", "#00FF00", "#FFFF00", "#CC5500", "#FF0000");
+                            $event_severity = $dataProvider->cef_severity;
+
+                            if (0 < $event_severity && $event_severity < 11){
+                                return ['style' => 'background-color:'.$array[($event_severity - 1) / 2]];
                             } else {
                                 return ['style' => 'background-color:#FFFFFF'];
                             }

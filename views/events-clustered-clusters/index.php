@@ -44,29 +44,19 @@ $this->registerJs('
                         
                         'id',
                         [
-                        'attribute' => 'severity',
-                        'value' => 'severity',
-                        'contentOptions' => function ($dataProvider, $key, $index, $column) {
-                            $array = [
-                                ['id' => '1', 'data' => '#00DBFF'],
-                                ['id' => '2', 'data' => '#00DBFF'],
-                                ['id' => '3', 'data' => '#00FF00'],
-                                ['id' => '4', 'data' => '#00FF00'],
-                                ['id' => '5', 'data' => '#FFFF00'],
-                                ['id' => '6', 'data' => '#FFFF00'],
-                                ['id' => '7', 'data' => '#CC5500'],
-                                ['id' => '8', 'data' => '#CC5500'],
-                                ['id' => '9', 'data' => '#FF0000'],
-                                ['id' => '10', 'data' => '#FF0000'], 
-                            ];
-                            if (0 < $dataProvider->severity && $dataProvider->severity < 11){
-                                $map = ArrayHelper::map($array, 'id', 'data');
-                                return ['style' => 'background-color:'.$map[$dataProvider->severity]];
-                            } else {
-                                return ['style' => 'background-color:#FFFFFF'];
+                            'attribute' => 'severity',
+                            'value' => 'severity',
+                            'contentOptions' => function ($dataProvider, $key, $index, $column) {
+                                $array = array("#00DBFF", "#00FF00", "#FFFF00", "#CC5500", "#FF0000");
+                                $cluster_severity = $dataProvider->severity;
+
+                                if (0 < $cluster_severity && $cluster_severity < 11){
+                                    return ['style' => 'background-color:'.$array[($cluster_severity - 1) / 2]];
+                                } else {
+                                    return ['style' => 'background-color:#FFFFFF'];
+                                }
                             }
-                        }
-                    ],
+                        ],
                         'number_of_events',
                         'comment',
                         ['class' => 'macgyer\yii2materializecss\widgets\grid\ActionColumn', 'template'=>'{update}{view}'],
