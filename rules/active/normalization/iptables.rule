@@ -21,31 +21,31 @@
 type=Single
 ptype=RegExp
 continue=dontcont
-pattern=(\w{3} [\s\d]\d [\d:]+) (\S+).*IN=(\S+).*MAC=(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}):(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}).*SRC=([\d\.]+).*DST=([\d\.]+).*PROTO=(UDP).*SPT=(\d+).*DPT=(\d+)
-desc=Dropped packet from sourceIP $8 protocol $10 dstPort $12
-action=write /var/log/secmon/__secInput $1 $2 $3 CEF:0|Linux|iptables|ver|0|Dropped packet - UDP|0|deviceInboundInterface=$3 dmac=$4 smac=$6 src=$8 dst=$9 proto=$10 spt=$11 dpt=$12 rawEvent=$0
+pattern=^([1-9]|[1-9][0-9]|1[0-8][0-9]|19[01]) (\w{3} [\s\d]\d [\d:]+) (\S+).*IN=(\S+).*MAC=(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}):(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}).*SRC=([\d\.]+).*DST=([\d\.]+).*PROTO=(UDP).*SPT=(\d+).*DPT=(\d+)
+desc=Dropped packet from sourceIP $9 protocol $11 dstPort $13
+action=write /var/log/secmon/__secInput $2 $3 $4 CEF:0|Linux|iptables|ver|0|Dropped packet - UDP|$1|deviceInboundInterface=$4 dmac=$5 smac=$7 src=$9 dst=$10 proto=$11 spt=$12 dpt=$13 rawEvent=$0
 
 # Rule for TCP protocol - INPUT
 type=Single
 ptype=RegExp
 continue=dontcont
-pattern=(\w{3} [\s\d]\d [\d:]+) (\S+).*IN=(\S+).*MAC=(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}):(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}).*SRC=([\d\.]+).*DST=([\d\.]+).*PROTO=(TCP).*SPT=(\d+).*DPT=(\d+).*RES=\S+ (.*RST|\w{3})
-desc=Dropped packet from sourceIP $8 protocol $10 dstPort $12
-action=write /var/log/secmon/__secInput $1 $2 $3 CEF:0|Linux|iptables|ver|0|Dropped packet - TCP|0|deviceInboundInterface=$3 dmac=$4 smac=$6 src=$8 dst=$9 proto=$10 spt=$11 dpt=$12 cs1Label=TCPFlag cs1=$13 rawEvent=$0
+pattern=^([1-9]|[1-9][0-9]|1[0-8][0-9]|19[01]) (\w{3} [\s\d]\d [\d:]+) (\S+).*IN=(\S+).*MAC=(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}):(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}).*SRC=([\d\.]+).*DST=([\d\.]+).*PROTO=(TCP).*SPT=(\d+).*DPT=(\d+).*RES=\S+ (.*RST|\w{3})
+desc=Dropped packet from sourceIP $9 protocol $11 dstPort $13
+action=write /var/log/secmon/__secInput $2 $3 $4 CEF:0|Linux|iptables|ver|0|Dropped packet - TCP|$1|deviceInboundInterface=$4 dmac=$5 smac=$7 src=$9 dst=$10 proto=$11 spt=$12 dpt=$13 cs1Label=TCPFlag cs1=$14 rawEvent=$0
 
 # !!! NETESTOVANE !!!
 # Rule for ICMP protocol - INPUT
 type=Single
 ptype=RegExp
 continue=dontcont
-pattern=(\w{3} [\s\d]\d [\d:]+) (\S+).*IN=(\S+).*MAC=(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}):(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}).*SRC=([\d\.]+).*DST=([\d\.]+).*PROTO=(ICMP).*TYPE=(\d+).*CODE=(\d+)
-desc=Dropped packet from sourceIP $8 protocol $10
-action=write /var/log/secmon/__secInput $1 $2 CEF:0|Linux|iptables|ver|0|Dropped packet - ICMP|0|deviceInboundInterface=$3 dmac=$4 smac=$6 src=$8 dst=$9 cs1Label=protocol cs1=$10 cs2Label=type cs2=$11 cs3Label=code cs3=$12 rawEvent=$0
+pattern=^([1-9]|[1-9][0-9]|1[0-8][0-9]|19[01]) (\w{3} [\s\d]\d [\d:]+) (\S+).*IN=(\S+).*MAC=(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}):(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}).*SRC=([\d\.]+).*DST=([\d\.]+).*PROTO=(ICMP).*TYPE=(\d+).*CODE=(\d+)
+desc=Dropped packet from sourceIP $8 protocol $11
+action=write /var/log/secmon/__secInput $2 $3 CEF:0|Linux|iptables|ver|0|Dropped packet - ICMP|$1|deviceInboundInterface=$4 dmac=$5 smac=$7 src=$9 dst=$10 cs1Label=protocol cs1=$11 cs2Label=type cs2=$12 cs3Label=code cs3=$13 rawEvent=$0
 
 # Rule for other protocol - INPUT
 type=Single
 ptype=RegExp
 continue=dontcont
-pattern=(\w{3} [\s\d]\d [\d:]+) (\S+).*IN=(\S+).*MAC=(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}):(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}).*SRC=([\d\.]+).*DST=([\d\.]+).*PROTO=(\S+)
-desc=Dropped packet from sourceIP $8 protocol $10 dstPort $12
-action=write /var/log/secmon/__secInput $1 $2 CEF:0|Linux|iptables|ver|0|Dropped packet - other|0|deviceInboundInterface=$3 dmac=$4 smac=$6 src=$8 dst=$9 cs1Label=protocol cs1=$10 rawEvent=$0
+pattern=^([1-9]|[1-9][0-9]|1[0-8][0-9]|19[01]) (\w{3} [\s\d]\d [\d:]+) (\S+).*IN=(\S+).*MAC=(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}):(([0-9a-f]{2}[:-]){5}[0-9a-f]{2}).*SRC=([\d\.]+).*DST=([\d\.]+).*PROTO=(\S+)
+desc=Dropped packet from sourceIP $9 protocol $11 dstPort $13
+action=write /var/log/secmon/__secInput $2 $3 CEF:0|Linux|iptables|ver|0|Dropped packet - other|$1|deviceInboundInterface=$4 dmac=$5 smac=$7 src=$9 dst=$10 cs1Label=protocol cs1=$11 rawEvent=$0
