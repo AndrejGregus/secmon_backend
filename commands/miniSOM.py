@@ -23,7 +23,6 @@ somShape = (int(config['MINISOM']['number_of_clusters_x']), int(config['MINISOM'
 numberOfIteration = int(config['MINISOM']['number_of_iteration'])
 sigma = float(config['MINISOM']['sigma'])
 learningRate = float(config['MINISOM']['learning_rate'])
-randomSeed = int(config['MINISOM']['random_seed'])
 
 # vytvorenie regexu na odstranovanie specialnych znakov
 delimiter = "!", "\"", "#", "$", "%%", "&", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~", "\t", "\n"
@@ -140,13 +139,15 @@ def prepare_data(raw_data):
 
         # analyze whole ip or specified octet
         if (column == 'src_ip' or column == 'dst_ip') and config['MINISOM']['ip_octet']:
-            raw_data[column] = raw_data[column].str.replace('.', 'x', ipOctet - 1).str.replace('.', ' ')
+            raw_data[column] = [re.sub('\..*', '', item) for item in raw_data[column].str.replace('.', 'x', ipOctet - 1)] 
         else:
             # clean text from special characters
             if cleanText: raw_data[column] = raw_data[column].str.replace(regexPattern, ' ')
 
             # remove white space from text -> analyze according whole text
             if wholeText: raw_data[column] = raw_data[column].str.replace(' ', '')
+
+        raw_data[column] = [re.sub(' +', ' ', item) for item in raw_data[column]]
 
         # add white space bettwen rows
         if isinstance(prepared_data, np.ndarray):
@@ -186,8 +187,7 @@ def padding_data(normalized_data, size_of_longest_data):
 def miniSOM(paddedData, sizeOfLongestData):
     som = MiniSom(somShape[0], somShape[1], sizeOfLongestData,
                   sigma=sigma,
-                  learning_rate=learningRate,
-                  random_seed=randomSeed)
+                  learning_rate=learningRate)
     som.train(np.array(paddedData), numberOfIteration, random_order=True, verbose=True)
     return som
 
